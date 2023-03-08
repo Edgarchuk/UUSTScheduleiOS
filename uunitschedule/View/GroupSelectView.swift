@@ -3,19 +3,34 @@ import Foundation
 import SwiftUI
 
 struct GroupSelectView: View {
+    @State var searchText: String = ""
+    
     @State var groups: [API.Group]?
     
     var body: some View {
-        if let groups = groups {
-            List(groups) { group in
-                Text(group.title)
-            }
-        } else {
-            Spacer()
-                .task {
-                    groups = try? await API.getGroups()
-                    print(groups)
+        NavigationStack {
+            if groups != nil {
+                List(searchResult) { group in
+                    Text(group.title)
                 }
+                .searchable(text: $searchText)
+            } else {
+                Spacer()
+                    .task {
+                        groups = try? await API.getGroups()
+                    }
+            }
+        }
+    }
+    
+    var searchResult: [API.Group] {
+        guard let groups = groups else {
+            return []
+        }
+        if searchText.isEmpty {
+            return groups
+        } else {
+            return groups.filter({$0.title.contains(searchText)})
         }
     }
 }
