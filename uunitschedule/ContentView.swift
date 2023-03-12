@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var groupsStorage = SelectedGroupsStorage()
+    
     var body: some View {
-        GroupSelectView()
+        if groupsStorage.groupIds == nil {
+            StartPageView()
+                .environmentObject(groupsStorage)
+        } else {
+            TabView {
+                SchedulePageView()
+                    .tabItem {
+                        Text("Schedule")
+                    }
+            }
+        }
     }
 }
 

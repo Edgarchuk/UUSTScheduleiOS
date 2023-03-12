@@ -6,14 +6,20 @@ struct GroupSelectView: View {
     @State var searchText: String = ""
     
     @State var groups: [API.Group]?
+    @EnvironmentObject var groupsStorage: SelectedGroupsStorage
     
     var body: some View {
-        NavigationStack {
+        VStack {
             if groups != nil {
+                TextField("Search", text: $searchText)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+                    .background(Color.systemBackground)
                 List(searchResult) { group in
-                    Text(group.title)
+                    Button(group.title) {
+                        groupsStorage.groupIds = [group.id]
+                    }
                 }
-                .searchable(text: $searchText)
             } else {
                 Spacer()
                     .task {
@@ -21,6 +27,7 @@ struct GroupSelectView: View {
                     }
             }
         }
+        .navigationBarBackButtonHidden()
     }
     
     var searchResult: [API.Group] {
