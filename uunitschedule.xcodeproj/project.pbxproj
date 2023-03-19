@@ -22,6 +22,7 @@
 		371A2E8F29BD01B100FAA6D6 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A2E8E29BD01B100FAA6D6 /* Extentions.swift */; };
 		371A2E9129BDB5FD00FAA6D6 /* UserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A2E9029BDB5FD00FAA6D6 /* UserDefaultWrapper.swift */; };
 		371A2E9329BDC9DA00FAA6D6 /* StartPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A2E9229BDC9DA00FAA6D6 /* StartPageView.swift */; };
+		3736C36429C2CF6100280523 /* GroupsScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3736C36329C2CF6100280523 /* GroupsScheduleViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		371A2E8E29BD01B100FAA6D6 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		371A2E9029BDB5FD00FAA6D6 /* UserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultWrapper.swift; sourceTree = "<group>"; };
 		371A2E9229BDC9DA00FAA6D6 /* StartPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPageView.swift; sourceTree = "<group>"; };
+		3736C36329C2CF6100280523 /* GroupsScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsScheduleViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			children = (
 				371A2E8129B33AAB00FAA6D6 /* Lesson.swift */,
 				371A2E8B29BCFE5300FAA6D6 /* SelectedGroupsStorage.swift */,
+				3736C36329C2CF6100280523 /* GroupsScheduleViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			files = (
 				371A2E9329BDC9DA00FAA6D6 /* StartPageView.swift in Sources */,
 				371A2E8A29B75E8200FAA6D6 /* GroupSelectView.swift in Sources */,
+				3736C36429C2CF6100280523 /* GroupsScheduleViewModel.swift in Sources */,
 				371A2E7F29B3395900FAA6D6 /* ScheduleView.swift in Sources */,
 				371A2E8F29BD01B100FAA6D6 /* Extentions.swift in Sources */,
 				371A2E9129BDB5FD00FAA6D6 /* UserDefaultWrapper.swift in Sources */,
