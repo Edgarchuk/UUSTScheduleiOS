@@ -6,6 +6,14 @@ struct StartPageView: View {
         NavigationView {
             VStack(spacing: 20) {
                 Spacer()
+                HStack {
+                    Image("iconRound")
+                        .frame(width: 40, height: 40)
+                        .padding([.trailing])
+                    Text("Расписание Уфимского Университета")
+                        .font(.largeTitle)
+                }
+                .padding([.leading, .trailing])
                 VStack {
                     viewWithImage(name: "wifi.slash", text: "Получайте свежую информацию, даже когда нет доступа к интернету")
                     viewWithImage(name: "person.crop.rectangle.stack", text: "Быстро переключайтесь между расписанием разных групп")

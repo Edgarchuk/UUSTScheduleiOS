@@ -15,6 +15,8 @@ struct GroupSelectView: View {
                     .textFieldStyle(.roundedBorder)
                     .padding()
                     .background(Color.systemBackground)
+                    .cornerRadius(20)
+                    .padding([.leading, .trailing])
                 List(searchResult) { group in
                     Button(group.title) {
                         groupsStorage.groupIds = [group.id]
@@ -26,8 +28,8 @@ struct GroupSelectView: View {
                         groups = try? await API.getGroups()
                     }
             }
-        }
-        .navigationBarBackButtonHidden()
+        }.background(Color.secondarySystemBackground)
+            .navigationTitle("Добавление группы")
     }
     
     var searchResult: [API.Group] {
