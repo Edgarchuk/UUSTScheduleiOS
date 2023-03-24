@@ -14,6 +14,33 @@ enum API {
         let course: Int
     }
     
+    struct GroupsSchedule: Codable {
+        let data: [ScheduleRow]
+    }
+
+    struct ScheduleRow: Codable {
+        let index, scheduleID: Int
+        var scheduleWeeks: [String]
+        let scheduleSubjectTitle: String
+        let scheduleWeekdayID: Int
+        let scheduleTimeTitle, buildingTitle, roomTitle, comment: String
+        let type, teacher: String
+        let teacherID: Int
+
+        enum CodingKeys: String, CodingKey {
+            case index
+            case scheduleID = "schedule_id"
+            case scheduleWeeks = "schedule_weeks"
+            case scheduleSubjectTitle = "schedule_subject_title"
+            case scheduleWeekdayID = "schedule_weekday_id"
+            case scheduleTimeTitle = "schedule_time_title"
+            case buildingTitle = "building_title"
+            case roomTitle = "room_title"
+            case comment, type, teacher
+            case teacherID = "teacher_id"
+        }
+    }
+    
     enum APIError: Error {
         case responseDataIsNil
         case parseJsonError
@@ -47,6 +74,17 @@ enum API {
         return groups.map({$0!})
     }
     
+    static func getGroupsSchedule(for groupId: Int) async throws -> [ScheduleRow] {
+        async let response = AF.request(url, method: .get, parameters: .groupsSchedule(for: groupId), encoding: URLEncoding(destination: .queryString)).serializingData()
+        var data = try JSONDecoder().decode(GroupsSchedule.self,from: try await response.value).data
+        data = data.map({item in
+            var tmp = item
+            tmp.scheduleWeeks = item.scheduleWeeks.filter({!$0.isEmpty})
+            return tmp
+        })
+        return data
+    }
+    
     
 }
 
@@ -76,11 +114,23 @@ extension API.Group {
 }
 
 extension Parameters {
-    static fileprivate var groups: Self {
+    static fileprivate var loginAndPassword: Self {
         return [
-            "ask": "get_group_list",
             "login": API.login,
             "pass": API.password
         ]
+    }
+    
+    static fileprivate var groups: Self {
+        var tmp = loginAndPassword
+        tmp["ask"] = "get_group_list"
+        return tmp
+    }
+    
+    static fileprivate func groupsSchedule(for id: Int) -> Self {
+        var tmp = loginAndPassword
+        tmp["ask"] = "get_group_schedule"
+        tmp["id"] = "\(id)"
+        return tmp
     }
 }

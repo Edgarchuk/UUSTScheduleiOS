@@ -2,14 +2,14 @@ import Foundation
 import SwiftUI
 
 struct ScheduleView: View {
-    @State var days: [SchoolDay]
+    @State var days: [API.ScheduleRow]
     
     var body: some View {
         LazyVStack(pinnedViews: [.sectionHeaders]) {
             Section {
                 ForEach(days, id: \.self) { day in
                     HStack {
-                        Text(day.dayWeek)
+                        Text(day.)
                             .font(.title)
                         Spacer()
                     }

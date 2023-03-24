@@ -61,6 +61,9 @@ struct SchedulePageView: View {
                 ScheduleView(days: days)
             }.padding(20)
         }.background(Color.systemBackground)
+            .task {
+                print(try? await API.getGroupsSchedule(for: 1626))
+            }
     }
 }
 
