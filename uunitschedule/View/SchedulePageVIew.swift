@@ -3,7 +3,8 @@ import Foundation
 import SwiftUI
 
 struct SchedulePageView: View {
-    @State var test = 1...100
+    @EnvironmentObject var groupsSchedule: GroupScheduleViewModel
+    @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     
     var body: some View {
         NavigationView {
@@ -12,12 +13,12 @@ struct SchedulePageView: View {
                     Grid {
                         GridRow {
                             Image(systemName: "person.3.fill")
-                            Text("Selected study group:")
+                            Text("Выбранная группа")
                                 .font(.title2)
                         }
                         GridRow {
                             Spacer()
-                            Text("ПРО-426")
+                            Text("\(groupsStorage.selectedGroup?.title ?? "nil")")
                                 .font(.title)
                         }
                     }
@@ -36,7 +37,7 @@ struct SchedulePageView: View {
                         Text("Весенний семестр 2022/2023")
                             .font(.title2)
                             .multilineTextAlignment(.center)
-                        Text("Неделя 27")
+                        Text("Неделя \(groupsSchedule.currentWeek ?? 0)")
                             .font(.title)
                     }
                     Spacer()

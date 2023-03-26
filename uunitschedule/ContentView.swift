@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var groupsStorage = SelectedGroupsStorage()
+    @ObservedObject var groupsStorage = GroupsStorageViewModel()
     @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
     
     var body: some View {

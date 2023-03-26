@@ -4,9 +4,8 @@ import SwiftUI
 
 struct GroupSelectView: View {
     @State var searchText: String = ""
-    
+    @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     @State var groups: [API.Group]?
-    @EnvironmentObject var groupsStorage: SelectedGroupsStorage
     
     var body: some View {
         VStack {
@@ -19,13 +18,15 @@ struct GroupSelectView: View {
                     .padding([.leading, .trailing])
                 List(searchResult) { group in
                     Button(group.title) {
+                        groupsStorage.selectedGroupId = group.id
                         groupsStorage.groupIds = [group.id]
                     }
                 }
             } else {
                 Spacer()
                     .task {
-                        groups = try? await API.getGroups()
+                        await groupsStorage.update()
+                        groups = groupsStorage.groups
                     }
             }
         }.background(Color.secondarySystemBackground)

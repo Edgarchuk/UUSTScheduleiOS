@@ -7,7 +7,7 @@ enum API {
     
     static let logger = Logger(subsystem: "com.uust.API", category: "")
     
-    struct Group: Identifiable, Decodable {
+    struct Group: Identifiable, Codable {
         typealias Id = Int
         let id: Id
         let title: String
@@ -45,6 +45,9 @@ enum API {
     struct ScheduleDay: Codable, Hashable {
         let weekDayId: Int
         let rows: Array<ScheduleRow>
+    }
+    struct CurrentWeekResult: Codable {
+        let data: [Int]
     }
     
     enum APIError: Error {
@@ -95,6 +98,13 @@ enum API {
         return result
     }
     
+    static func getCurrentWeek() async throws -> Int {
+        async let response = AF.request(url, method: .get, parameters: .currentWeek, encoding: URLEncoding(destination: .queryString)).serializingData()
+        let data = try JSONDecoder().decode(CurrentWeekResult.self,from: try await response.value).data
+        return data.first ?? 0
+    }
+    
+    
     
 }
 
@@ -141,6 +151,11 @@ extension Parameters {
         var tmp = loginAndPassword
         tmp["ask"] = "get_group_schedule"
         tmp["id"] = "\(id)"
+        return tmp
+    }
+    static fileprivate var currentWeek: Self {
+        var tmp = loginAndPassword
+        tmp["ask"] = "get_current_week"
         return tmp
     }
 }

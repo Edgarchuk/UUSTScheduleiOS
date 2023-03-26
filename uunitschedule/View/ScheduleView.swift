@@ -3,20 +3,20 @@ import SwiftUI
 
 struct ScheduleView: View {
     @EnvironmentObject var groupsSchedule: GroupScheduleViewModel
-    @EnvironmentObject var selectedGroupsStorage: SelectedGroupsStorage
+    @EnvironmentObject var selectedGroupsStorage: GroupsStorageViewModel
     
     var body: some View {
         content
     }
     
-    let firstColumnWidth: CGFloat = 80
+    let firstColumnWidth: CGFloat = 60
     
     @ViewBuilder var content: some View {
         switch groupsSchedule.state {
-        case .schedule(let schedule):
+        case .schedule:
             LazyVStack(pinnedViews: [.sectionHeaders]) {
                 Section {
-                    ForEach(schedule, id: \.self) { day in
+                    ForEach(groupsSchedule.schedule, id: \.self) { day in
                         HStack {
                             Text(day.weekdayName)
                                 .font(.title)
@@ -62,7 +62,7 @@ struct ScheduleView: View {
                 } header: {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(schedule, id: \.self) { day in
+                            ForEach(groupsSchedule.schedule, id: \.self) { day in
                                 Button {
 
                                 } label: {
@@ -79,7 +79,7 @@ struct ScheduleView: View {
         case .loading:
             Text("Loading")
                 .task {
-                    await groupsSchedule.loadSchedule(for: 1736)
+                    await groupsSchedule.loadSchedule(for: 1852)
                 }
         case .error:
             Text("Error")
@@ -88,7 +88,7 @@ struct ScheduleView: View {
 }
 
 struct ScheduleView_Previews: PreviewProvider {
-    static var groupsStorage = SelectedGroupsStorage()
+    static var groupsStorage = GroupsStorageViewModel()
     static var groupsScheduleStorage = GroupScheduleViewModel()
     
     static var previews: some View {
