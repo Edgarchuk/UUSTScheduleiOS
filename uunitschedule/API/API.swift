@@ -8,7 +8,8 @@ enum API {
     static let logger = Logger(subsystem: "com.uust.API", category: "")
     
     struct Group: Identifiable, Decodable {
-        let id: Int
+        typealias Id = Int
+        let id: Id
         let title: String
         let faculty: String
         let course: Int
@@ -18,7 +19,7 @@ enum API {
         let data: [ScheduleRow]
     }
 
-    struct ScheduleRow: Codable {
+    struct ScheduleRow: Codable, Hashable {
         let index, scheduleID: Int
         var scheduleWeeks: [String]
         let scheduleSubjectTitle: String
@@ -41,14 +42,19 @@ enum API {
         }
     }
     
+    struct ScheduleDay: Codable, Hashable {
+        let weekDayId: Int
+        let rows: Array<ScheduleRow>
+    }
+    
     enum APIError: Error {
         case responseDataIsNil
         case parseJsonError
     }
     
     static let url = "https://isu.ugatu.su/api/schedule/"
-    fileprivate static let login = "arpakit"
-    fileprivate static let password = "vPDPhQAE"
+    fileprivate static let login = "IOSArsen"
+    fileprivate static let password = "hFFP5SjsRZapWVM"
     
     static func getGroups() async throws -> [Group] {
         async let response = AF.request(url, method: .get,  parameters: .groups, encoding: URLEncoding(destination: .queryString)).serializingData()
@@ -74,7 +80,7 @@ enum API {
         return groups.map({$0!})
     }
     
-    static func getGroupsSchedule(for groupId: Int) async throws -> [ScheduleRow] {
+    static func getGroupsSchedule(for groupId: Group.Id) async throws -> [ScheduleDay] {
         async let response = AF.request(url, method: .get, parameters: .groupsSchedule(for: groupId), encoding: URLEncoding(destination: .queryString)).serializingData()
         var data = try JSONDecoder().decode(GroupsSchedule.self,from: try await response.value).data
         data = data.map({item in
@@ -82,7 +88,11 @@ enum API {
             tmp.scheduleWeeks = item.scheduleWeeks.filter({!$0.isEmpty})
             return tmp
         })
-        return data
+        
+        var result: [ScheduleDay] = (0..<Constant.dayInWeek).map({ weekday in
+            return ScheduleDay(weekDayId: weekday, rows: data.filter({$0.scheduleWeekdayID == weekday}))
+        })
+        return result
     }
     
     

@@ -9,4 +9,10 @@ class SelectedGroupsStorage: ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    @UserDefault("selectedGroup") public var selectedGroupId: Int? {
+        didSet {
+            objectWillChange.send()
+        }
+    }
 }

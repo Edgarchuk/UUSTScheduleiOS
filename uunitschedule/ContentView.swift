@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var groupsStorage = SelectedGroupsStorage()
+    @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
     
     var body: some View {
         if groupsStorage.groupIds == nil {
             StartPageView()
                 .environmentObject(groupsStorage)
+                .environmentObject(groupsScheduleStorage)
         } else {
             TabView {
                 SchedulePageView()
@@ -21,6 +23,9 @@ struct ContentView: View {
                         Text("Schedule")
                     }
             }
+                .environmentObject(groupsStorage)
+                .environmentObject(groupsScheduleStorage)
+
         }
     }
 }

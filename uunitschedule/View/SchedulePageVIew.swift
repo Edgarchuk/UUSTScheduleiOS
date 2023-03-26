@@ -4,18 +4,6 @@ import SwiftUI
 
 struct SchedulePageView: View {
     @State var test = 1...100
-    let days: [SchoolDay] = [
-        SchoolDay(dayWeek: "Понедельник", lessons: [
-            .init(name: "Тест1", audience: "Тест", timeStart: "8:00", timeEnd: "9:35", type: "Лекция", professor: "Test"),
-            .init(name: "Тест2", audience: "Тест", timeStart: "9:40", timeEnd: "11:20", type: "Лекция", professor: "Test")
-        ]),
-        SchoolDay(dayWeek: "Вторник", lessons: [
-            .init(name: "Тест2", audience: "Тест", timeStart: "8:00", timeEnd: "9:35", type: "Лекция", professor: "Test")
-        ]),
-        SchoolDay(dayWeek: "Стреда", lessons: [
-            .init(name: "Тест3", audience: "Тест", timeStart: "8:00", timeEnd: "9:35", type: "Лекция", professor: "Test")
-        ])
-    ]
     
     var body: some View {
         NavigationView {
@@ -58,12 +46,10 @@ struct SchedulePageView: View {
                     .background(Color.secondarySystemBackground)
                     .cornerRadius(20)
                     .padding(.bottom)
-                ScheduleView(days: days)
+                ScheduleView()
             }.padding(20)
         }.background(Color.systemBackground)
-            .task {
-                print(try? await API.getGroupsSchedule(for: 1626))
-            }
+        
     }
 }
 
