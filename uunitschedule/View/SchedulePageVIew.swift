@@ -55,7 +55,12 @@ struct SchedulePageView: View {
 }
 
 struct SchedulePageView_Previews: PreviewProvider {
+    static var groupsStorage = GroupsStorageViewModel()
+    static var groupsScheduleStorage = GroupScheduleViewModel()
+    
     static var previews: some View {
         SchedulePageView()
+            .environmentObject(groupsStorage)
+            .environmentObject(groupsScheduleStorage)
     }
 }
