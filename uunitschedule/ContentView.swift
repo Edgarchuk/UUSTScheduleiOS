@@ -25,20 +25,26 @@ struct ContentView: View {
                 .environmentObject(groupsStorage)
                 .environmentObject(groupsScheduleStorage)
         } else {
-            NavigationView {
-                TabView {
-                    SchedulePageView()
-                        .tabItem {
-                            Text("Schedule")
-                        }
+            TabView {
+                SchedulePageView()
+                    .tabItem {
+                        Label("Расписание", systemImage: "brain.head.profile")
+                    }
+                Spacer()
+                    .tabItem {
+                        Label("Экзамены", systemImage: "pencil.and.outline")
+                    }
+                NavigationView {
                     SettingsPage()
-                        .tabItem {
-                            Text("Settings")
-                        }
                 }
-                .environmentObject(groupsStorage)
-                .environmentObject(groupsScheduleStorage)
+                    .tabItem {
+                        Label("Настройки", systemImage: "gearshape")
+                    }
             }
+            .background(Color.systemBackground)
+            .environmentObject(groupsStorage)
+            .environmentObject(groupsScheduleStorage)
+            
 
         }
     }
