@@ -14,18 +14,13 @@ struct GroupSelectView: View {
     var body: some View {
         VStack {
             if groups != nil {
-                TextField("Search", text: $searchText)
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-                    .background(Color.systemBackground)
-                    .cornerRadius(20)
-                    .padding([.leading, .trailing])
                 List(searchResult) { group in
                     Button(group.title) {
                         onSelect(group.id)
                         dismiss()
                     }
                 }
+                .searchable(text: $searchText)
             } else {
                 Spacer()
                     .task {
@@ -44,7 +39,7 @@ struct GroupSelectView: View {
         if searchText.isEmpty {
             return groups
         } else {
-            return groups.filter({$0.title.contains(searchText)})
+            return groups.filter({$0.title.lowercased().contains(searchText.lowercased())})
         }
     }
 }
