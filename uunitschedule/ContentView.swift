@@ -11,20 +11,34 @@ struct ContentView: View {
     @ObservedObject var groupsStorage = GroupsStorageViewModel()
     @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
     
+    @State var isLoaded: Bool = false
+    
     var body: some View {
-        if groupsStorage.groupIds == nil {
+        if isLoaded == false {
+            Spacer()
+                .task {
+                    await groupsStorage.update()
+                    self.isLoaded = true
+                }
+        } else if groupsStorage.groupIds == nil {
             StartPageView()
                 .environmentObject(groupsStorage)
                 .environmentObject(groupsScheduleStorage)
         } else {
-            TabView {
-                SchedulePageView()
-                    .tabItem {
-                        Text("Schedule")
-                    }
-            }
+            NavigationView {
+                TabView {
+                    SchedulePageView()
+                        .tabItem {
+                            Text("Schedule")
+                        }
+                    SettingsPage()
+                        .tabItem {
+                            Text("Settings")
+                        }
+                }
                 .environmentObject(groupsStorage)
                 .environmentObject(groupsScheduleStorage)
+            }
 
         }
     }

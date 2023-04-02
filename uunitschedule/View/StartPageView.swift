@@ -2,6 +2,9 @@ import Foundation
 import SwiftUI
 
 struct StartPageView: View {
+    
+    @EnvironmentObject var groupsStorage: GroupsStorageViewModel
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -25,7 +28,10 @@ struct StartPageView: View {
                 }
                 .padding([.leading, .trailing])
                 NavigationLink {
-                    GroupSelectView()
+                    GroupSelectView(onSelect: {group in
+                        groupsStorage.selectedGroupId = group
+                        groupsStorage.groupIds = [group]
+                    })
                 } label: {
                     Text("Выбрать учебную группу")
                         .frame(maxWidth: .infinity)

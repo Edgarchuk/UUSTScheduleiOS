@@ -3,9 +3,13 @@ import Foundation
 import SwiftUI
 
 struct GroupSelectView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State var searchText: String = ""
     @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     @State var groups: [API.Group]?
+    
+    let onSelect: (API.Group.Id) -> ()
     
     var body: some View {
         VStack {
@@ -18,8 +22,8 @@ struct GroupSelectView: View {
                     .padding([.leading, .trailing])
                 List(searchResult) { group in
                     Button(group.title) {
-                        groupsStorage.selectedGroupId = group.id
-                        groupsStorage.groupIds = [group.id]
+                        onSelect(group.id)
+                        dismiss()
                     }
                 }
             } else {
@@ -47,6 +51,6 @@ struct GroupSelectView: View {
 
 struct GroupSelectView_Previews: PreviewProvider {
     static var previews: some View {
-        GroupSelectView()
+        GroupSelectView(onSelect: {_ in })
     }
 }
