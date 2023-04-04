@@ -24,8 +24,17 @@ class GroupsStorageViewModel: ObservableObject {
         self.groups = try? storage.get()
     }
     
+    func getGroup(forId id: API.Group.Id) -> API.Group? {
+        return groups?.first(where: {$0.id == id})
+    }
+    
     var selectedGroup: API.Group? {
         guard let selectedGroupId = selectedGroupId else { return nil }
-        return groups?.first(where: {$0.id == selectedGroupId})
+        return getGroup(forId: selectedGroupId)
+    }
+    
+    func filterIds(_ filter: (API.Group.Id) -> Bool) {
+        var tmp = groupIds?.filter({filter($0)})
+        groupIds = groupIds?.filter({filter($0)})
     }
 }

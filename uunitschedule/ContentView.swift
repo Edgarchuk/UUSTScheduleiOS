@@ -10,22 +10,45 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var groupsStorage = GroupsStorageViewModel()
     @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
+    @ObservedObject var colorScheme = ColorSchemeViewModel()
+    
+    @State var isLoaded: Bool = false
     
     var body: some View {
-        if groupsStorage.groupIds == nil {
+        if isLoaded == false {
+            Spacer()
+                .task {
+                    await groupsStorage.update()
+                    self.isLoaded = true
+                }
+        } else if groupsStorage.groupIds == nil {
             StartPageView()
                 .environmentObject(groupsStorage)
                 .environmentObject(groupsScheduleStorage)
+                .preferredColorScheme(colorScheme.colorScheme)
+                
         } else {
             TabView {
                 SchedulePageView()
                     .tabItem {
-                        Text("Schedule")
+                        Label("Расписание", systemImage: "brain.head.profile")
+                    }
+                Spacer()
+                    .tabItem {
+                        Label("Экзамены", systemImage: "pencil.and.outline")
+                    }
+                NavigationView {
+                    SettingsPage()
+                }
+                    .tabItem {
+                        Label("Настройки", systemImage: "gearshape")
                     }
             }
-                .environmentObject(groupsStorage)
-                .environmentObject(groupsScheduleStorage)
-
+            .background(Color.systemBackground)
+            .environmentObject(groupsStorage)
+            .environmentObject(groupsScheduleStorage)
+            .environmentObject(colorScheme)
+            .preferredColorScheme(colorScheme.colorScheme)
         }
     }
 }

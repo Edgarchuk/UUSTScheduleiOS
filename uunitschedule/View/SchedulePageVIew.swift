@@ -7,7 +7,7 @@ struct SchedulePageView: View {
     @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     
     var body: some View {
-        NavigationView {
+        VStack {
             ScrollView {
                 HStack {
                     Grid {
@@ -25,9 +25,9 @@ struct SchedulePageView: View {
                     .padding([.top, .bottom, .leading])
                     Spacer()
                 }
-                    .background(Color.secondarySystemBackground)
-                    .cornerRadius(20)
-                    .padding(.bottom)
+                .background(Color.secondarySystemBackground)
+                .cornerRadius(20)
+                .padding(.bottom)
                 
                 HStack {
                     Image(systemName: "arrow.left")
@@ -44,13 +44,12 @@ struct SchedulePageView: View {
                     Image(systemName: "arrow.right")
                         .padding(.trailing)
                 }
-                    .background(Color.secondarySystemBackground)
-                    .cornerRadius(20)
-                    .padding(.bottom)
+                .background(Color.secondarySystemBackground)
+                .cornerRadius(20)
+                .padding(.bottom)
                 ScheduleView()
             }.padding(20)
         }.background(Color.systemBackground)
-        
     }
 }
 

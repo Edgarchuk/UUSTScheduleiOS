@@ -3,25 +3,24 @@ import Foundation
 import SwiftUI
 
 struct GroupSelectView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State var searchText: String = ""
     @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     @State var groups: [API.Group]?
     
+    let onSelect: (API.Group.Id) -> ()
+    
     var body: some View {
         VStack {
             if groups != nil {
-                TextField("Search", text: $searchText)
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-                    .background(Color.systemBackground)
-                    .cornerRadius(20)
-                    .padding([.leading, .trailing])
                 List(searchResult) { group in
                     Button(group.title) {
-                        groupsStorage.selectedGroupId = group.id
-                        groupsStorage.groupIds = [group.id]
+                        onSelect(group.id)
+                        dismiss()
                     }
                 }
+                .searchable(text: $searchText)
             } else {
                 Spacer()
                     .task {
@@ -40,13 +39,13 @@ struct GroupSelectView: View {
         if searchText.isEmpty {
             return groups
         } else {
-            return groups.filter({$0.title.contains(searchText)})
+            return groups.filter({$0.title.lowercased().contains(searchText.lowercased())})
         }
     }
 }
 
 struct GroupSelectView_Previews: PreviewProvider {
     static var previews: some View {
-        GroupSelectView()
+        GroupSelectView(onSelect: {_ in })
     }
 }

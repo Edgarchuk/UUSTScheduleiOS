@@ -27,6 +27,8 @@
 		3777211429CD9A30008197BC /* GroupsScheduleStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777211329CD9A30008197BC /* GroupsScheduleStorage.swift */; };
 		3777211729CF0FEF008197BC /* GroupScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777211629CF0FEF008197BC /* GroupScheduleViewModel.swift */; };
 		3777211929CF3B23008197BC /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777211829CF3B23008197BC /* Constant.swift */; };
+		37D48F9529D9307D00AE03C0 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D48F9429D9307D00AE03C0 /* SettingsPageView.swift */; };
+		37D48F9729D99BC800AE03C0 /* ColorSchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D48F9629D99BC800AE03C0 /* ColorSchemeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		3777211329CD9A30008197BC /* GroupsScheduleStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsScheduleStorage.swift; sourceTree = "<group>"; };
 		3777211629CF0FEF008197BC /* GroupScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupScheduleViewModel.swift; sourceTree = "<group>"; };
 		3777211829CF3B23008197BC /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		37D48F9429D9307D00AE03C0 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
+		37D48F9629D99BC800AE03C0 /* ColorSchemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,7 @@
 				371A2E7E29B3395900FAA6D6 /* ScheduleView.swift */,
 				371A2E8929B75E8200FAA6D6 /* GroupSelectView.swift */,
 				371A2E9229BDC9DA00FAA6D6 /* StartPageView.swift */,
+				37D48F9429D9307D00AE03C0 /* SettingsPageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 			children = (
 				371A2E8B29BCFE5300FAA6D6 /* GroupsStorage.swift */,
 				3777211629CF0FEF008197BC /* GroupScheduleViewModel.swift */,
+				37D48F9629D99BC800AE03C0 /* ColorSchemeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -240,9 +246,11 @@
 				371A2E9129BDB5FD00FAA6D6 /* UserDefaultWrapper.swift in Sources */,
 				371A2E8C29BCFE5300FAA6D6 /* GroupsStorage.swift in Sources */,
 				371A2E7B29B309F300FAA6D6 /* SchedulePageVIew.swift in Sources */,
+				37D48F9529D9307D00AE03C0 /* SettingsPageView.swift in Sources */,
 				371A2E7D29B3209100FAA6D6 /* Colors.swift in Sources */,
 				371A2E8229B33AAB00FAA6D6 /* Lesson.swift in Sources */,
 				3777211429CD9A30008197BC /* GroupsScheduleStorage.swift in Sources */,
+				37D48F9729D99BC800AE03C0 /* ColorSchemeViewModel.swift in Sources */,
 				371A2E6E29B309B400FAA6D6 /* ContentView.swift in Sources */,
 				3777211729CF0FEF008197BC /* GroupScheduleViewModel.swift in Sources */,
 				371A2E6C29B309B400FAA6D6 /* uunitscheduleApp.swift in Sources */,
