@@ -3,6 +3,8 @@ import SwiftUI
 
 struct SettingsPage: View {
     @EnvironmentObject var selectedGroups: GroupsStorageViewModel
+    @EnvironmentObject var colorScheme: ColorSchemeViewModel
+    @EnvironmentObject var groupSchedule: GroupScheduleViewModel
     
     var body: some View {
         Form {
@@ -22,6 +24,7 @@ struct SettingsPage: View {
                         if let group = selectedGroups.getGroup(forId: id) {
                             Button {
                                 selectedGroups.selectedGroupId = id
+                                groupSchedule.reload()
                             } label: {
                                 HStack {
                                     Image(systemName: id == selectedGroups.selectedGroupId ? "circle.fill" : "circle")
@@ -48,6 +51,20 @@ struct SettingsPage: View {
                 }
             } header: {
                 Text("Быстрый выбор учебной группы")
+            }
+            
+            Section {
+                Picker("Тема", selection: $colorScheme.colorScheme) {
+                    Text("Систамная")
+                        .tag(nil as ColorScheme?)
+                    Text("Cветлая")
+                        .tag(ColorScheme.light as ColorScheme?)
+                    Text("Темная")
+                        .tag(ColorScheme.dark as ColorScheme?)
+                }
+                .pickerStyle(.segmented)
+            } header: {
+                Text("Тема приложения:")
             }
             
             Section {
@@ -90,10 +107,13 @@ struct SettingsPage: View {
 
 struct SettingsPage_Previews: PreviewProvider {
     static var groupsStorage = GroupsStorageViewModel()
+    static var colorScheme = ColorSchemeViewModel()
     static var previews: some View {
         NavigationView {
             SettingsPage()
         }
         .environmentObject(groupsStorage)
+        .environmentObject(colorScheme)
+        .preferredColorScheme(colorScheme.colorScheme)
     }
 }

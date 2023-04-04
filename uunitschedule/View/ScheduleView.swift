@@ -79,7 +79,10 @@ struct ScheduleView: View {
         case .loading:
             Text("Loading")
                 .task {
-                    await groupsSchedule.loadSchedule(for: 1852)
+                    guard let selectedGroup = selectedGroupsStorage.selectedGroupId else {
+                        return
+                    }
+                    await groupsSchedule.loadSchedule(for: selectedGroup)
                 }
         case .error:
             Text("Error")

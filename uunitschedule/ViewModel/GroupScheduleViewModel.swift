@@ -14,6 +14,10 @@ class GroupScheduleViewModel: ObservableObject {
     
     private let scheduleStorage = GroupsScheduleStorage()
     
+    func reload() {
+        state = .loading
+    }
+    
     func updateSchedule(with schedule: [API.ScheduleDay]) {
         guard let currentWeek = currentWeek else { return }
         let tmp = schedule.map({ day in

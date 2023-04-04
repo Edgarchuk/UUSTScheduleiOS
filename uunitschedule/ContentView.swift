@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var groupsStorage = GroupsStorageViewModel()
     @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
+    @ObservedObject var colorScheme = ColorSchemeViewModel()
     
     @State var isLoaded: Bool = false
     
@@ -24,6 +25,8 @@ struct ContentView: View {
             StartPageView()
                 .environmentObject(groupsStorage)
                 .environmentObject(groupsScheduleStorage)
+                .preferredColorScheme(colorScheme.colorScheme)
+                
         } else {
             TabView {
                 SchedulePageView()
@@ -44,8 +47,8 @@ struct ContentView: View {
             .background(Color.systemBackground)
             .environmentObject(groupsStorage)
             .environmentObject(groupsScheduleStorage)
-            
-
+            .environmentObject(colorScheme)
+            .preferredColorScheme(colorScheme.colorScheme)
         }
     }
 }
