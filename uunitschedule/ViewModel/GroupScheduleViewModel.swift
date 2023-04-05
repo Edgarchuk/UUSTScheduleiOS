@@ -4,44 +4,63 @@ import Combine
 class GroupScheduleViewModel: ObservableObject {
     enum State {
         case loading
-        case error
+        case error(errorResult: String)
         case schedule
     }
     
     @Published private(set) var state: State = .loading
     @Published var currentWeek: Int?
-    @Published private(set) var schedule: [API.ScheduleDay] = []
+    @Published private(set) var schedule: [ScheduleDay] = []
+    @Published private(set) var exams: [ScheduleItem] = []
     
-    private let scheduleStorage = GroupsScheduleStorage()
+    private let scheduleDelegate: GroupScheduleDelegate
+    
+    init(scheduleDelegate: GroupScheduleDelegate) {
+        self.scheduleDelegate = scheduleDelegate
+    }
     
     func reload() {
         state = .loading
     }
     
-    func updateSchedule(with schedule: [API.ScheduleDay]) {
+    func updateSchedule(with schedule: [ScheduleDay]) {
         guard let currentWeek = currentWeek else { return }
         let tmp = schedule.map({ day in
-            API.ScheduleDay(weekDayId: day.weekDayId, rows: day.rows.filter({
-                $0.scheduleWeeks.contains(where: {(Int($0) ?? 0) == currentWeek})
+            ScheduleDay(weekDay: day.weekDay, schedule: day.schedule.filter({
+                $0.scheduleWeek == currentWeek
             }))
-        }).filter({$0.rows.count > 0})
+        }).filter({$0.schedule.count > 0})
         DispatchQueue.main.async {
             self.schedule = tmp
+        }
+        
+        var tmpExams = [ScheduleItem]()
+        for day in schedule {
+            for item in day.schedule {
+                if item.type == "Консультация" || item.type == "Экзамен" {
+                    tmpExams.append(item)
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.exams = tmpExams.sorted(by: {$0.timeStart < $1.timeStart})
         }
     }
     
     func loadSchedule(for id: API.Group.Id) async {
         await loadCurrentWeek()
-        try? await scheduleStorage.update(for: id)
-        if let schedule = try? scheduleStorage.get(for: id) {
+        do {
+            try await scheduleDelegate.load(for: id)
+            let schedule = try scheduleDelegate.get(for: id)
             DispatchQueue.main.async {
                 self.state = .schedule
             }
             updateSchedule(with: schedule)
-            return
-        }
-        DispatchQueue.main.async {
-            self.state = .error
+        } catch(let error) {
+            DispatchQueue.main.async {
+                self.state = .error(errorResult: error.localizedDescription)
+            }
         }
     }
     
