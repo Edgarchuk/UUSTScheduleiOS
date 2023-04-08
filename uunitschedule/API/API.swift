@@ -96,7 +96,7 @@ enum API {
             return tmp
         })
         
-        var result: [ScheduleDay] = (0..<Constant.dayInWeek).map({ weekday in
+        let result: [ScheduleDay] = (1...Constant.dayInWeek).map({ weekday in
             return ScheduleDay(weekDayId: weekday, rows: data.filter({$0.scheduleWeekdayID == weekday}))
         })
         return result

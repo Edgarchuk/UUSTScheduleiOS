@@ -84,7 +84,7 @@ class GroupSchedule: GroupScheduleDelegate {
         try await updateSemesterInfo()
         
         let schedule = try (try await API.getGroupsSchedule(for: id)).map({item in
-            let weekday = (item.weekDayId + 1) % 7 + 1
+            let weekday = item.weekDayId % 7 + 1
             return ScheduleDay(weekDay: WeekDay(rawValue: weekday) ?? .wednesday,
                                schedule: try item.rows.map({ row in
                 let tmp = try row.scheduleWeeks.map({ week in
@@ -120,9 +120,9 @@ class GroupSchedule: GroupScheduleDelegate {
     
     private func getDay(forYear year: Int,weekday: Int, andWeek week: Int) -> Date? {
         let firstSeptember = DateComponents(calendar: calendar,timeZone: calendar.timeZone, year: year, month: 9, day: 1)
-        var date = calendar.date(from: firstSeptember)!
+        let date = calendar.date(from: firstSeptember)!
         let components = calendar.dateComponents([.weekday], from: date)
-        let resultDay = calendar.date(byAdding: .day, value: week * 7 + weekday + (7 - components.weekday!), to: date)
+        let resultDay = calendar.date(byAdding: .day, value: (week - 2) * 7 + weekday + (7 - components.weekday!), to: date)
         return resultDay
     }
     
