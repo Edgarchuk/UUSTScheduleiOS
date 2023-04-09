@@ -11,7 +11,7 @@ public extension Color {
     static let tertiaryLabel = Color(UIColor.tertiaryLabel)
     static let quaternaryLabel = Color(UIColor.quaternaryLabel)
 
-    static let systemBackground = Color(UIColor.systemBackground)
-    static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
-    static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
+    static let systemBackground = Color("background")
+    static let secondarySystemBackground = Color("secondaryBackground")
+    static let tertiarySystemBackground = Color("tertiaryBackground")
 }

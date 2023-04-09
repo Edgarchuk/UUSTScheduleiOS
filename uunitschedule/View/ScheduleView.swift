@@ -45,7 +45,7 @@ struct ScheduleView: View {
                                     .font(.title2)
                                     .padding([.leading, .trailing])
                                     .background(Color.tertiarySystemBackground)
-                                    .cornerRadius(20)
+                                    .cornerRadius(Constant.radius)
                                 Text(row.scheduleSubjectTitle)
                                     .font(.title3)
                                 Text(row.teacher)
@@ -58,7 +58,7 @@ struct ScheduleView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.secondarySystemBackground)
-                        .cornerRadius(20)
+                        .cornerRadius(Constant.radius)
                     }
                 }
             } header: {
