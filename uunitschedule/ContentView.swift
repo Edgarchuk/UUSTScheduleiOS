@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var groupsStorage = GroupsStorageViewModel()
-    @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel()
+    @ObservedObject var groupsScheduleStorage = GroupScheduleViewModel(scheduleDelegate: GroupSchedule())
     @ObservedObject var colorScheme = ColorSchemeViewModel()
     
     @State var isLoaded: Bool = false
@@ -33,7 +33,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Расписание", systemImage: "brain.head.profile")
                     }
-                Spacer()
+                ExamsView()
                     .tabItem {
                         Label("Экзамены", systemImage: "pencil.and.outline")
                     }

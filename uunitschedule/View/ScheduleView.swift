@@ -22,7 +22,12 @@ struct ScheduleView: View {
                                 .font(.title)
                             Spacer()
                         }
-                        ForEach(day.rows, id: \.self) { row in
+                        HStack {
+                            Text(day.schedule.first?.localizedDay ?? "")
+                                .font(.caption)
+                            Spacer()
+                        }
+                        ForEach(day.schedule, id: \.self) { row in
                             HStack(alignment: .top) {
                                 VStack(spacing: 5) {
                                     Text("\(row.index)")
@@ -32,9 +37,9 @@ struct ScheduleView: View {
                                                 .foregroundColor(.green)
                                                 .frame(width: 30, height: 30)
                                         )
-                                    Text(row.timeStart)
+                                    Text(row.formattedStartTime)
                                         .font(.title3)
-                                    Text(row.timeEnd)
+                                    Text(row.formattedEndTime)
                                         .font(.caption)
                                 }
                                 .frame(width: firstColumnWidth)
@@ -84,15 +89,15 @@ struct ScheduleView: View {
                     }
                     await groupsSchedule.loadSchedule(for: selectedGroup)
                 }
-        case .error:
-            Text("Error")
+        case .error(let errorString):
+            Text(errorString)
         }
     }
 }
 
 struct ScheduleView_Previews: PreviewProvider {
     static var groupsStorage = GroupsStorageViewModel()
-    static var groupsScheduleStorage = GroupScheduleViewModel()
+    static var groupsScheduleStorage = GroupScheduleViewModel(scheduleDelegate: GroupSchedule())
     
     static var previews: some View {
         SchedulePageView()
@@ -101,28 +106,44 @@ struct ScheduleView_Previews: PreviewProvider {
     }
 }
 
-extension API.ScheduleDay {
-    private static let dayNames: [Int: String] = [
-        0: "Понедельник",
-        1: "Вторник",
-        2: "Среда",
-        3: "Четверг",
-        4: "Пятница",
-        5: "Суббота"
+extension ScheduleDay {
+    private static let dayNames: [WeekDay: String] = [
+        .sunday: "Воскресение",
+        .monday: "Понедельник",
+        .tuesday: "Вторник",
+        .wednesday: "Среда",
+        .thursday: "Четверг",
+        .friday: "Пятница",
+        .saturday: "Суббота"
     ]
     
     var weekdayName: String {
         get {
-            return API.ScheduleDay.dayNames[self.weekDayId] ?? ""
+            return ScheduleDay.dayNames[self.weekDay] ?? ""
         }
     }
 }
 
-extension API.ScheduleRow {
-    var timeStart: String {
-        return String(self.scheduleTimeTitle.split(separator: "-").first ?? "")
+extension ScheduleItem {
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
+    var formattedStartTime: String {
+        return Self.timeFormatter.string(from: self.timeStart)
     }
-    var timeEnd: String {
-        return String(self.scheduleTimeTitle.split(separator: "-").last ?? "")
+    var formattedEndTime: String {
+        return Self.timeFormatter.string(from: self.timeEnd)
+    }
+    
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("MMMMd")
+        return formatter
+    }()
+    
+    var localizedDay: String {
+        Self.dayFormatter.string(from: self.timeStart)
     }
 }

@@ -15,6 +15,10 @@ enum API {
         let course: Int
     }
     
+    struct APIResult<T: Codable>: Codable {
+        let data: [T]
+    }
+    
     struct GroupsSchedule: Codable {
         let data: [ScheduleRow]
     }
@@ -92,7 +96,7 @@ enum API {
             return tmp
         })
         
-        var result: [ScheduleDay] = (0..<Constant.dayInWeek).map({ weekday in
+        let result: [ScheduleDay] = (1...Constant.dayInWeek).map({ weekday in
             return ScheduleDay(weekDayId: weekday, rows: data.filter({$0.scheduleWeekdayID == weekday}))
         })
         return result
@@ -104,6 +108,11 @@ enum API {
         return data.first ?? 0
     }
     
+    static func getCurrentSemester() async throws -> String {
+        async let response = AF.request(url, method: .get, parameters: .currentSemester, encoding: URLEncoding(destination: .queryString)).serializingData()
+        let data = try JSONDecoder().decode(APIResult<String>.self,from: try await response.value).data
+        return data.first ?? ""
+    }
     
     
 }
@@ -156,6 +165,11 @@ extension Parameters {
     static fileprivate var currentWeek: Self {
         var tmp = loginAndPassword
         tmp["ask"] = "get_current_week"
+        return tmp
+    }
+    static fileprivate var currentSemester: Self {
+        var tmp = loginAndPassword
+        tmp["ask"] = "get_current_semestr"
         return tmp
     }
 }
