@@ -47,7 +47,20 @@ struct SchedulePageView: View {
                 .background(Color.secondarySystemBackground)
                 .cornerRadius(20)
                 .padding(.bottom)
-                ScheduleView()
+                switch (groupsSchedule.state) {
+                case .schedule:
+                    ScheduleView(schedule: groupsSchedule.schedule)
+                case .loading:
+                    Text("Loading")
+                        .task {
+                            guard let selectedGroup = groupsStorage.selectedGroupId else {
+                                return
+                            }
+                            await groupsSchedule.loadSchedule(for: selectedGroup)
+                        }
+                case .error(let errorResult):
+                    Text(errorResult)
+                }
             }.padding(20)
         }.background(Color.systemBackground)
     }

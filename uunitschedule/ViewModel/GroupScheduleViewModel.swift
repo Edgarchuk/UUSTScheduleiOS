@@ -11,7 +11,7 @@ class GroupScheduleViewModel: ObservableObject {
     @Published private(set) var state: State = .loading
     @Published var currentWeek: Int?
     @Published private(set) var schedule: [ScheduleDay] = []
-    @Published private(set) var exams: [ScheduleItem] = []
+    @Published private(set) var exams: [ScheduleDay] = []
     
     private let scheduleDelegate: GroupScheduleDelegate
     
@@ -34,17 +34,14 @@ class GroupScheduleViewModel: ObservableObject {
             self.schedule = tmp
         }
         
-        var tmpExams = [ScheduleItem]()
-        for day in schedule {
-            for item in day.schedule {
-                if item.type == "Консультация" || item.type == "Экзамен" {
-                    tmpExams.append(item)
-                }
-            }
-        }
+        var tmpExams = schedule.map({ day in
+            ScheduleDay(weekDay: day.weekDay, schedule: day.schedule.filter({
+                $0.type == "Экзамен" || $0.type == "Консультация"
+            }))
+        }).filter({$0.schedule.count > 0})
         
         DispatchQueue.main.async {
-            self.exams = tmpExams.sorted(by: {$0.timeStart < $1.timeStart})
+            self.exams = tmpExams
         }
     }
     

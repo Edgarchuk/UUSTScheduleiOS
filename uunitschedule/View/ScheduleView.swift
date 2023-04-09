@@ -2,95 +2,81 @@ import Foundation
 import SwiftUI
 
 struct ScheduleView: View {
-    @EnvironmentObject var groupsSchedule: GroupScheduleViewModel
-    @EnvironmentObject var selectedGroupsStorage: GroupsStorageViewModel
-    
     var body: some View {
         content
     }
     
     let firstColumnWidth: CGFloat = 60
     
+    @State var schedule: [ScheduleDay]
+    
     @ViewBuilder var content: some View {
-        switch groupsSchedule.state {
-        case .schedule:
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
-                Section {
-                    ForEach(groupsSchedule.schedule, id: \.self) { day in
-                        HStack {
-                            Text(day.weekdayName)
-                                .font(.title)
-                            Spacer()
-                        }
-                        HStack {
-                            Text(day.schedule.first?.localizedDay ?? "")
-                                .font(.caption)
-                            Spacer()
-                        }
-                        ForEach(day.schedule, id: \.self) { row in
-                            HStack(alignment: .top) {
-                                VStack(spacing: 5) {
-                                    Text("\(row.index)")
-                                        .foregroundColor(Color.white)
-                                        .background(
-                                            Circle()
-                                                .foregroundColor(.green)
-                                                .frame(width: 30, height: 30)
-                                        )
-                                    Text(row.formattedStartTime)
-                                        .font(.title3)
-                                    Text(row.formattedEndTime)
-                                        .font(.caption)
-                                }
-                                .frame(width: firstColumnWidth)
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text("\(row.type)")
-                                        .font(.title2)
-                                        .padding([.leading, .trailing])
-                                        .background(Color.tertiarySystemBackground)
-                                        .cornerRadius(20)
-                                    Text(row.scheduleSubjectTitle)
-                                        .font(.title3)
-                                    Text(row.teacher)
-                                        .font(.caption)
-                                    Text(row.roomTitle)
-                                        .font(.caption)
-                                }
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.secondarySystemBackground)
-                            .cornerRadius(20)
-                        }
+        LazyVStack(pinnedViews: [.sectionHeaders]) {
+            Section {
+                ForEach(schedule, id: \.self) { day in
+                    HStack {
+                        Text(day.weekdayName)
+                            .font(.title)
+                        Spacer()
                     }
-                } header: {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(groupsSchedule.schedule, id: \.self) { day in
-                                Button {
+                    HStack {
+                        Text(day.schedule.first?.localizedDay ?? "")
+                            .font(.caption)
+                        Spacer()
+                    }
+                    ForEach(day.schedule, id: \.self) { row in
+                        HStack(alignment: .top) {
+                            VStack(spacing: 5) {
+                                Text("\(row.index)")
+                                    .foregroundColor(Color.white)
+                                    .background(
+                                        Circle()
+                                            .foregroundColor(.green)
+                                            .frame(width: 30, height: 30)
+                                    )
+                                Text(row.formattedStartTime)
+                                    .font(.title3)
+                                Text(row.formattedEndTime)
+                                    .font(.caption)
+                            }
+                            .frame(width: firstColumnWidth)
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("\(row.type)")
+                                    .font(.title2)
+                                    .padding([.leading, .trailing])
+                                    .background(Color.tertiarySystemBackground)
+                                    .cornerRadius(20)
+                                Text(row.scheduleSubjectTitle)
+                                    .font(.title3)
+                                Text(row.teacher)
+                                    .font(.caption)
+                                Text(row.roomTitle)
+                                    .font(.caption)
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.secondarySystemBackground)
+                        .cornerRadius(20)
+                    }
+                }
+            } header: {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(schedule, id: \.self) { day in
+                            Button {
 
-                                } label: {
-                                    Text(day.weekdayName)
-                                        .tag(day.weekdayName)
-                                }.buttonStyle(.bordered)
-                            }
+                            } label: {
+                                Text(day.weekdayName)
+                                    .tag(day.weekdayName)
+                            }.buttonStyle(.bordered)
                         }
                     }
-                    .padding([.top, .bottom])
-                    .background(Color.systemBackground)
                 }
+                .padding([.top, .bottom])
+                .background(Color.systemBackground)
             }
-        case .loading:
-            Text("Loading")
-                .task {
-                    guard let selectedGroup = selectedGroupsStorage.selectedGroupId else {
-                        return
-                    }
-                    await groupsSchedule.loadSchedule(for: selectedGroup)
-                }
-        case .error(let errorString):
-            Text(errorString)
         }
     }
 }
