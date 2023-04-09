@@ -23,7 +23,7 @@ struct StartPageView: View {
                 }
                 .padding()
                 .background {
-                    RoundedRectangle(cornerRadius: 20)
+                    RoundedRectangle(cornerRadius: Constant.radius)
                         .fill(Color.systemBackground)
                 }
                 .padding([.leading, .trailing])

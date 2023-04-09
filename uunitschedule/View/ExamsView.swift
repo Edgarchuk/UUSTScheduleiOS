@@ -8,7 +8,9 @@ struct ExamsView: View {
         ScrollView {
             ScheduleView(schedule: groupsSchedule.exams)
                 .padding()
-        }.navigationBarTitle("Экзамены")
+        }
+        .background(Color.systemBackground)
+            .navigationBarTitle("Экзамены")
     }
 }
 

@@ -26,7 +26,7 @@ struct SchedulePageView: View {
                     Spacer()
                 }
                 .background(Color.secondarySystemBackground)
-                .cornerRadius(20)
+                .cornerRadius(Constant.radius)
                 .padding(.bottom)
                 
                 HStack {
@@ -45,7 +45,7 @@ struct SchedulePageView: View {
                         .padding(.trailing)
                 }
                 .background(Color.secondarySystemBackground)
-                .cornerRadius(20)
+                .cornerRadius(Constant.radius)
                 .padding(.bottom)
                 switch (groupsSchedule.state) {
                 case .schedule:
