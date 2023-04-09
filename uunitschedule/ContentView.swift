@@ -29,11 +29,15 @@ struct ContentView: View {
                 
         } else {
             TabView {
-                SchedulePageView()
+                NavigationView {
+                    SchedulePageView()
+                }
                     .tabItem {
                         Label("Расписание", systemImage: "brain.head.profile")
                     }
-                ExamsView()
+                NavigationView {
+                    ExamsView()
+                }
                     .tabItem {
                         Label("Экзамены", systemImage: "pencil.and.outline")
                     }

@@ -7,8 +7,8 @@ struct SchedulePageView: View {
     @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     
     var body: some View {
-        VStack {
-            ScrollView {
+        ScrollView {
+            VStack {
                 HStack {
                     Grid {
                         GridRow {
@@ -47,9 +47,25 @@ struct SchedulePageView: View {
                 .background(Color.secondarySystemBackground)
                 .cornerRadius(20)
                 .padding(.bottom)
-                ScheduleView()
-            }.padding(20)
-        }.background(Color.systemBackground)
+                switch (groupsSchedule.state) {
+                case .schedule:
+                    ScheduleView(schedule: groupsSchedule.schedule)
+                case .loading:
+                    Text("Loading")
+                        .task {
+                            guard let selectedGroup = groupsStorage.selectedGroupId else {
+                                return
+                            }
+                            await groupsSchedule.loadSchedule(for: selectedGroup)
+                        }
+                case .error(let errorResult):
+                    Text(errorResult)
+                }
+            }
+            .padding()
+        }
+            .background(Color.systemBackground)
+            .navigationBarTitle("Расписание")
     }
 }
 

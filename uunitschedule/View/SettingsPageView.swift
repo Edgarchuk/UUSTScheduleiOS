@@ -37,6 +37,7 @@ struct SettingsPage: View {
                             Text("Nill")
                         }
                     }.onDelete(perform: deleteItemsId)
+                    EditButton()
                     NavigationLink {
                         GroupSelectView(onSelect: {group in
                             if selectedGroups.groupIds == nil {
@@ -70,10 +71,13 @@ struct SettingsPage: View {
             Section {
                 List {
                     link(withText: "Telegram-bot с расписанием",
+                         description: "Нажмите, чтобы перейти к официальному боту с расписанием.",
                          andUrl: "https://t.me/uust_bot ")
                     link(withText: "Сайт Уфимского университета",
+                         description: "Нажмите, чтобы перейти на официальный сайт университета.",
                          andUrl: "https://uust.ru/")
                     link(withText: "Есть вопросы или предложения?",
+                         description: "Напишите разработчику приложения в Telegram.",
                          andUrl: "https://t.me/arpakit")
                 }
             } header: {
@@ -83,18 +87,20 @@ struct SettingsPage: View {
         }.navigationTitle("Настройки")
     }
     
-    @ViewBuilder func link(withText text: String, andUrl url: String) -> some View {
+    @ViewBuilder func link(withText text: String, description: String, andUrl url: String) -> some View {
         HStack {
             VStack(alignment: .leading) {
                 Text(text)
-                    .onTapGesture {
-                        if let url = URL(string: url) {
-                            UIApplication.shared.open(url)
-                        }
-                    }
+                    .fontWeight(.bold)
+                Text(description)
             }
             Spacer()
             Image(systemName: "link")
+        }
+        .onTapGesture {
+            if let url = URL(string: url) {
+                UIApplication.shared.open(url)
+            }
         }
     }
     
