@@ -7,8 +7,8 @@ struct SchedulePageView: View {
     @EnvironmentObject var groupsStorage: GroupsStorageViewModel
     
     var body: some View {
-        VStack {
-            ScrollView {
+        ScrollView {
+            VStack {
                 HStack {
                     Grid {
                         GridRow {
@@ -61,8 +61,11 @@ struct SchedulePageView: View {
                 case .error(let errorResult):
                     Text(errorResult)
                 }
-            }.padding(20)
-        }.background(Color.systemBackground)
+            }
+            .padding()
+        }
+            .background(Color.systemBackground)
+            .navigationBarTitle("Расписание")
     }
 }
 
