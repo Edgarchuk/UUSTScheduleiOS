@@ -62,7 +62,7 @@ class GroupScheduleViewModel: ObservableObject {
     }
     
     func loadCurrentWeek() async {
-        if let week = try? await API.getCurrentWeek() {
+        if let week = try? currentWeek {
             DispatchQueue.main.async {
                 self.currentWeek = week
             }

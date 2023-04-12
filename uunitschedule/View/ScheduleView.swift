@@ -27,11 +27,11 @@ struct ScheduleView: View {
                     ForEach(day.schedule, id: \.self) { row in
                         HStack(alignment: .top) {
                             VStack(spacing: 5) {
-                                Text("\(row.index)")
+                                Text("\(row.paraCount1)")
                                     .foregroundColor(Color.white)
                                     .background(
                                         Circle()
-                                            .foregroundColor(.green)
+                                            .foregroundColor(row.paraColor1)
                                             .frame(width: 30, height: 30)
                                     )
                                 Text(row.formattedStartTime)
@@ -111,6 +111,32 @@ extension ScheduleDay {
 }
 
 extension ScheduleItem {
+    
+    private static let paraColor: [String: Color] = [
+        "Лекция": .blue,
+        "Практика (семинар)": .orange,
+        "Лабораторная работа": .purple,
+        "Физвоспитание": .yellow
+    ]
+    private static let paraCount: [String: String] = [
+        "08:00": "1",
+        "09:45": "2",
+        "12:10": "3",
+        "13:55": "4",
+        "16:10": "5",
+        "17:55": "6",
+        "19:40": "7"
+    ]
+    var paraColor1: Color {
+        get {
+            return ScheduleItem.paraColor[type] ?? .gray
+        }
+    }
+    var paraCount1: String {
+        get {
+            return ScheduleItem.paraCount[self.formattedStartTime]!
+        }
+    }
     private static let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
