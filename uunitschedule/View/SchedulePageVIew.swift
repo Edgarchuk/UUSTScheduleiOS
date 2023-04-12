@@ -30,17 +30,8 @@ struct SchedulePageView: View {
                 .padding(.bottom)
                 
                 HStack {
-                    Button(action:
-                            { if groupsSchedule.currentWeek! > 0 {
-                                groupsSchedule.currentWeek = groupsSchedule.currentWeek!-1
-                            }
-                        print(groupsSchedule.currentWeek)
-                        
-                        groupsSchedule.reload()
-                       
-                    }){
-                        Image(systemName: "arrow.left")
-                        .padding(.trailing)}
+                    Image(systemName: "arrow.left")
+                        .padding(.leading)
                     Spacer()
                     VStack {
                         Text("Весенний семестр 2022/2023")
@@ -50,17 +41,8 @@ struct SchedulePageView: View {
                             .font(.title)
                     }
                     Spacer()
-                    Button(action:
-                            { if groupsSchedule.currentWeek! < 53 {
-                                groupsSchedule.currentWeek = groupsSchedule.currentWeek!+1
-                            }
-                        print(groupsSchedule.currentWeek)
-                        
-                        groupsSchedule.reload()
-                       
-                    }){
-                        Image(systemName: "arrow.right")
-                        .padding(.trailing)}
+                    Image(systemName: "arrow.right")
+                        .padding(.trailing)
                 }
                 .background(Color.secondarySystemBackground)
                 .cornerRadius(Constant.radius)
